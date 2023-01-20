@@ -1,7 +1,8 @@
-﻿namespace BaseProject.BO.Controllers;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+namespace BaseProject.BO.Controllers;
 
 [Authorize(Roles = "Admin")]
-//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SuperAdmin, Admin")]
 
 public class HomeController : Controller
 {

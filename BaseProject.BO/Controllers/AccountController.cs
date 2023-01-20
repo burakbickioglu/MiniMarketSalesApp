@@ -53,7 +53,7 @@
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Products");
             }
 
 
