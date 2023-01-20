@@ -1,0 +1,40 @@
+﻿@using BaseProject.BO.Models
+@model UserDetailViewModel
+
+<div class="tab-content">
+    <div class="tab-pane show active mt-3 mx-3" id="form-row-preview">
+        <form asp-action="UpdateUser" asp-controller="Admin" method="post">
+            <input type="hidden" asp-for="@Model.UserDTO.Id" />
+            <div class="row g-2">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">Name</label>
+                    <input asp-for="@Model.UserDTO.Name" type="text" class="form-control" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">Surname</label>
+                    <input asp-for="@Model.UserDTO.Surname" class="form-control" />
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">E-Mail</label>
+                    <input asp-for="@Model.UserDTO.Email" type="email" class="form-control" id="inputAddress" placeholder="Email" disabled>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="mb-3 col-md-3"></div>
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">User forgot password ? </label><br />
+                    <a asp-action="SendResetPassword" asp-controller="Admin" asp-route-id="@Model.UserDTO.Id" class="btn btn-primary">Send Reset Password Mail</a>
+                </div>
+            </div>
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+            <button onclick="return confirm('Are you sure you want to delete the user?');" asp-controller="Admin" asp-action="RemoveUser" asp-route-id=@Model.UserDTO.Id class="btn btn-danger">Delete</button>
+
+        </form>
+    </div> <!-- end preview-->
+</div> <!-- end tab-content-->

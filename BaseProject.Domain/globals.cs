@@ -1,0 +1,16 @@
+﻿global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;
+global using BaseProject.Domain.Interfaces;
+global using System;
+global using System.ComponentModel.DataAnnotations;
+global using MediatR;
+global using Newtonsoft.Json;
+global using BaseProject.Domain.Enums;
+global using System.Collections.Generic;
+global using Microsoft.AspNetCore.Http;
+global using System.Data;
+global using System.Text;
+global using Kendo.Mvc.Infrastructure;
+global using Kendo.Mvc.UI;
+global using BaseProject.Domain.Helpers;

@@ -1,0 +1,28 @@
+﻿@using Kendo.Mvc.UI
+
+<div class="k-d-flex k-justify-content-center" style="padding-top: 54px;">
+    <div class="k-w-300">
+        <label for="datepicker">Show e-mails from:</label>
+        @(Html.Kendo().DatePicker()
+            .Name("datepicker")
+            .Value("10/10/2011")
+            .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+            )
+        <br />
+        <br />
+        <br />
+        <label for="monthpicker">Add to archive mail from:</label>
+        @(Html.Kendo().DatePicker()
+            .Name("monthpicker")
+            .Start(CalendarView.Year)
+            .Depth(CalendarView.Year)
+            .Format("MMMM yyyy")
+            .Value("November 2011")
+            .DateInput()
+            .HtmlAttributes(new { style = "width: 100%", title = "monthpicker" })
+            )
+    </div>
+
+    
+</div>
+

@@ -1,0 +1,144 @@
+﻿@using BaseProject.Domain.Enums;
+@using BaseProject.Domain.Models.Dtos.Basket;
+@using BaseProject.Domain.Models.Dtos.Product;
+@using Kendo.Mvc.UI;
+@model BasketDTO;
+
+@{
+    Layout = "_Layout";
+}
+<div class="container-fluid">
+
+    <div class="page-title-box d-flex justify-content-between align-items-center">
+        <h4 class="page-title">
+            Sepet
+        </h4>
+
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h1>@ViewData["Title"]</h1>
+        </div>
+    </div>
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                Swal.fire('@ViewBag.Message')
+            });
+        </script>
+    }
+    @(Html.Kendo().Grid<ProductDTO>()
+        .Name("grid")
+        .ToolBar(t => t.Search())
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.Name).Width(80).Title("Ürün Adı");
+            columns.Bound(p => p.Type).Width(80).Title("Ürün Tipi");
+            columns.Bound(p => p.Price).Width(150).Format("{0:0.##} TL").Title("Fiyat");
+            columns.Bound(p => p.Name).Width(100).Title("#").ClientTemplate(
+            "<a class='btn btn-danger' href='" +
+            Url.Action("DeleteProductFromBasket", "Baskets") +
+            "/#= Id #'" +
+            ">Sepetten Çıkar</a>"
+            );
+
+        })
+        .Scrollable()
+        .Filterable()
+        .Pageable()
+        .Sortable()
+        .Search(s =>
+        {
+            s.Field(o => o.Name, "contains");
+            s.Field(o => o.Type, "contains");
+        })
+        .HtmlAttributes(new { style = "height:500px;" })
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(10)
+        .ServerOperation(true)
+        .Events(events => events.Error("error_handler"))
+        .Model(model => model.Id(p => p.Id))
+        .Read(read => read.Action("ProductList_Read", "Baskets").Data("returnFilters"))
+        )
+        )
+
+    <br />
+    <div class="row g-2">
+        <div class="mb-3 col-md-4">
+            <form class="form-group" asp-action="CompleteSale" asp-controller="Baskets" method="post">
+
+                <br />
+                <h3 class="text-success">Toplam Tutar : @Model.TotalPrice TL</h3>
+                <br />
+                <input class="form-control" name="BasketId" value="@Model.Id" type="hidden" />
+                @if (Model.TotalPrice > 0)
+                {
+                    <label class="form-label">Ödeme Tipi</label>
+                    <select class="form-control" name="PaymentType" asp-items="@Html.GetEnumSelectList<PaymentType>()">
+                    </select>
+                    <button type="submit" class="btn btn-success mb-3 mt-2">Alışverişi Tamamla</button>
+                }
+            </form>
+        </div>
+    </div>
+
+
+
+</div> <!-- container -->
+@section Scripts {
+
+    <script type="text/javascript">
+
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+    </script>
+
+    <script>
+        function returnFilters() {
+            return {
+                "requestFilters": returnGridFilter("grid"),
+            };
+        }
+
+        function returnGridFilter(e) {
+            var grid = $("#" + e).data("kendoGrid").dataSource;
+            var filter = grid.transport.parameterMap({ filter: grid.filter() });
+            return filter.filter;
+        }
+
+        $(document).ready(function () {
+            $(".k-input-inner").attr("placeholder", "Ürün Ara...");
+        });
+
+    </script>
+ }
+
+
+<style>
+    .k-grid .k-grid-search {
+        display: flex;
+        margin-left: auto;
+        margin-right: 0;
+        width: 250px;
+    }
+</style>
+
+
+
+
+
+
+
+

@@ -1,0 +1,123 @@
+﻿@using BaseProject.Domain.Models.Dtos.Product;
+@using Kendo.Mvc.UI
+@{
+    Layout = "_Layout";
+}
+<div class="container-fluid">
+
+    <div class="page-title-box d-flex justify-content-between align-items-center">
+        <h4 class="page-title">
+            Ürün Listesi
+        </h4>
+
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h1>@ViewData["Title"]</h1>
+        </div>
+        <a asp-controller="Products" asp-action="Add" type="button" class="btn btn-success"><i class="mdi mdi-account-plus me-1"></i>Yeni Ürün Ekle</a>
+    </div>
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+               Swal.fire('@ViewBag.Message')
+
+            });
+        </script>
+    }
+    @(Html.Kendo().Grid<ProductDTO>()
+        .Name("grid")
+        .ToolBar(t => t.Search())
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.Name).Width(80).Title("Ürün Adı");
+            columns.Bound(p => p.Type).Width(80).Title("Ürün Tipi");
+            columns.Bound(p => p.Stock).Width(80).Title("Stok Adedi");
+            columns.Bound(p => p.Price).Width(150).Format("{0:0.##} TL").Title("Birim Fiyatı");
+            columns.Bound(p => p.Name).Width(100).Title("#").ClientTemplate(
+            "<a  class='btn btn-success' href='" +
+            Url.Action("AddProductToBasket", "Products") +
+            "/#= Id #'" +
+            ">Sepete Ekle</a> <a class='btn btn-warning' href='" +
+            Url.Action("Update", "Products") +
+            "/#= Id #'" +
+            ">Düzenle</a>"
+            );
+            columns.Command(command => { command.Destroy(); }).Width(50);
+        })
+        .Scrollable()
+        .Filterable()
+        .Pageable()
+        .Sortable()
+        .Search(s =>
+        {
+            s.Field(o => o.Name, "contains");
+            s.Field(o => o.Type, "contains");
+        })
+        .HtmlAttributes(new { style = "height:800px;" })
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(10)
+        .ServerOperation(true)
+        .Events(events => events.Error("error_handler"))
+        .Model(model => model.Id(p => p.Id))
+        .Read(read => read.Action("ProductList_Read", "Products").Data("returnFilters"))
+        .Destroy(update => update.Action("ProductList_Delete", "Products"))
+        )
+        )
+
+</div> <!-- container -->
+@section Scripts {
+
+    <script type="text/javascript">
+
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+    </script>
+
+    <script>
+        function returnFilters() {
+            return {
+                "requestFilters": returnGridFilter("grid"),
+            };
+        }
+
+        function returnGridFilter(e) {
+            var grid = $("#" + e).data("kendoGrid").dataSource;
+            var filter = grid.transport.parameterMap({ filter: grid.filter() });
+            return filter.filter;
+        }
+
+        $(document).ready(function () {
+            $(".k-input-inner").attr("placeholder", "Ürün Ara...");
+        });
+
+    </script>
+ }
+
+
+<style>
+    .k-grid .k-grid-search {
+        display: flex;
+        margin-left: auto;
+        margin-right: 0;
+        width: 250px;
+    }
+</style>
+
+
+
+
+
+

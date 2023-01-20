@@ -1,0 +1,100 @@
+﻿@using Kendo.Mvc.UI
+@{
+    Layout = "_Layout";
+}
+<div class="container-fluid">
+
+    <div class="page-title-box d-flex justify-content-between align-items-center">
+        <h4 class="page-title">
+            Users
+        </h4>
+
+        <div class="d-flex align-items-center justify-content-between mb-3">
+
+            <h1>@ViewData["Title"]</h1>
+        </div>
+        <a asp-controller="Admin" asp-action="AddUser" type="button" class="btn btn-success"><i class="mdi mdi-account-plus me-1"></i>Add New User</a>
+    </div>
+   
+    @(Html.Kendo().Grid<UserListViewModel>()
+        .Name("grid")
+        .ToolBar(t => t.Search())
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.Id).Filterable(false).Width(150).ClientTemplate(
+            "<a class='btn btn-outline-info' href='" +
+            Url.Action("UpdateUser", "Admin") +
+            "/#= Id #'" +
+            ">#= Id #</a>"
+            );
+            columns.Bound(p => p.Name).Title("Name");
+            columns.Bound(p => p.Surname).Title("Surname");
+            columns.Bound(p => p.Email).Title("E-Mail");
+            columns.Bound(p => p.LastLogin).ClientTemplate("#=kendo.toString(kendo.parseDate(LastLogin), 'dd/MM/yyyy')#").Width(140).Title("Last Login");
+            columns.Bound(p => p.CreatedAt).ClientTemplate("#=kendo.toString(kendo.parseDate(CreatedAt), 'dd/MM/yyyy')#").Width(140).Title("Register Date");
+
+        })
+        .Scrollable()
+        .Filterable()
+        .Pageable()
+        .Sortable()
+        .Search(s =>
+        {
+            s.Field(o => o.Id, "contains");
+            s.Field(o => o.Email, "contains");
+            s.Field(o => o.Name, "contains");
+            s.Field(o => o.Surname, "contains");
+        })
+        .HtmlAttributes(new { style = "height:800px;" })
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(20)
+        .ServerOperation(true)
+        .Read(read => read.Action("UserList_Read", "Admin").Data("returnFilters"))
+        )
+        )
+
+
+</div> <!-- container -->
+@section Scripts {
+
+    <script>
+        function returnFilters() {
+            return {
+                "requestFilters": returnGridFilter("grid"),
+            };
+        }
+
+        function returnGridFilter(e) {
+            var grid = $("#" + e).data("kendoGrid").dataSource;
+            var filter = grid.transport.parameterMap({ filter: grid.filter() });
+            return filter.filter;
+        }
+
+        $(document).ready(function () {
+            $(".k-input-inner").attr("placeholder", "Search what you want...");
+        });
+
+    </script>
+ }
+
+
+
+
+
+ <style>
+    .k-grid .k-grid-search {
+        display: flex;
+        margin-left: auto;
+        margin-right: 0;
+        width:250px;
+        pla
+
+    }
+</style>
+
+
+
+
+
+

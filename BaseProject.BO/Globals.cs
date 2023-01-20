@@ -1,0 +1,25 @@
+﻿global using BaseProject.Service.Utilities;
+global using BaseProject.Service.Utilities.Helpers;
+global using BaseProject.BO.Utilities.Helpers;
+global using BaseProject.Domain.Interfaces;
+global using Microsoft.AspNetCore.Authentication.Cookies;
+global using Microsoft.AspNetCore.Authentication;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Localization;
+global using BaseProject.Domain.Models.Dtos.Authorization;
+global using System.Security.Claims;
+global using Microsoft.AspNetCore.Authorization;
+global using Newtonsoft.Json;
+global using BaseProject.Domain.Models.ViewModels;
+global using BaseProject.BO.Models;
+global using Kendo.Mvc.UI;
+global using BaseProject.Domain.Models.Dtos.User;
+global using Microsoft.AspNetCore.Localization;
+global using System.Diagnostics;
+global using System.Globalization;
+global using BaseProject.Service.Utilities.Constants;
+global using Newtonsoft.Json.Linq;
+global using BaseProject.Domain.Helpers;
+global using System.Data;
+global using System.Text;
+

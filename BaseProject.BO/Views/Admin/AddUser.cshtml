@@ -1,0 +1,42 @@
+﻿@model AddUserDTO
+<div class="tab-content">
+    <div class="tab-pane show active mt-3 mx-3" id="form-row-preview">
+        <form asp-action="AddUser" asp-controller="Admin" method="post">
+           
+            <div class="row g-2">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">Name</label>
+                    <input asp-for="@Model.Name" type="text" class="form-control" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">Surname</label>
+                    <input asp-for="@Model.Surname" class="form-control" />
+                </div>
+            </div>
+            <div class="row g-2">
+
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">E-Mail</label>
+                    <input asp-for="@Model.Email" type="email" class="form-control" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label  class="form-label">Password</label>
+                    <input asp-for="@Model.Password" type="password" class="form-control" />
+                </div>
+            </div>
+           
+            <div class="row g-2">
+                <div class="mb-3">
+                <label  class="form-check-label">IsAdmin</label>
+                <input asp-for="@Model.IsAdmin" type="checkbox" class="form-check-input" />
+                </div>
+            </div>
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div> <!-- end preview-->
+
+
+</div> <!-- end tab-content-->
